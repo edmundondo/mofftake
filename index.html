@@ -27,6 +27,7 @@
     <button class="pdf-btn" onclick="exportPDF()">📄 Export PDF Report</button>
     <button class="csv-btn" onclick="exportCSV()">📊 Export Excel (CSV)</button>
     <button class="epub-btn" onclick="exportEPUB()">📚 Export EPUB</button>
+    <button class="sync-btn" onclick="loadRemoteNotes()">🔄 Sync Reviewer Notes</button>
   </div>
 
   <div class="filters" id="filters"></div>
@@ -38,11 +39,11 @@
   </section>
 
   <footer>Click a project row to expand · click any status pill to cycle done → in progress → not started · search and filter above</footer>
-</div>
 
-<div class="status-badge">
+  <div class="status-badge">
   <div class="status-badge-icon"><img src="data:image/png;base64,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" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></div>
   <div class="status-badge-text">Live infrastructure monitoring by <span class="status-badge-brand">Matokipedo</span></div>
+</div>
 </div>
 
 <style>
@@ -63,22 +64,26 @@
     --red: #DC143C;
     --red-ink: #A61930;
     --high: #C2410C;
+    --badge-bg: #1B1D23;
+    --badge-border: #2A2D35;
+    --badge-icon-bg: linear-gradient(135deg, #6C5CE7, #341F97);
+    --badge-icon-text: #FFFFFF;
+    --badge-text: #B7BAC4;
+    --badge-brand: #FFFFFF;
+    --badge-font: system-ui, -apple-system, Segoe UI, sans-serif;
   }
 
   .status-badge {
-    position: fixed;
-    left: 50%;
-    bottom: 16px;
-    transform: translateX(-50%);
     display: flex;
     align-items: center;
     gap: 10px;
+    width: fit-content;
+    margin: 22px auto 0;
     background: var(--badge-bg);
     border: 1px solid var(--badge-border);
     border-radius: 999px;
     padding: 6px 14px 6px 6px;
     box-shadow: 0 4px 14px rgba(0,0,0,0.28);
-    z-index: 50;
   }
   .status-badge-icon {
     width: 28px; height: 28px;
@@ -98,7 +103,7 @@
   }
   .status-badge-brand { font-weight: 700; color: var(--badge-brand); }
   @media (max-width: 720px) {
-    .status-badge { bottom: 10px; padding: 5px 12px 5px 5px; }
+    .status-badge { margin-top: 16px; padding: 5px 12px 5px 5px; }
     .status-badge-text { font-size: 11px; }
   }
 
@@ -445,12 +450,27 @@
   }
   .epub-btn:hover { background: #A6390D; transform: translateY(-1px); }
 
+  .sync-btn {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+    background: var(--gold-soft);
+    color: var(--gold-ink);
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .15s ease, transform .1s ease;
+  }
+  .sync-btn:hover { background: rgba(212,160,23,0.32); transform: translateY(-1px); }
+
   .print-meta { display: none; }
 
   @media print {
     * { -webkit-print-color-adjust: exact; print-color-adjust: exact; color-adjust: exact; }
     body { background: #FFFFFF; color: #14171C; padding: 0; }
-    .search-wrap, .filters, .pdf-btn, .csv-btn, .epub-btn, .chevron, .wa-link { display: none !important; }
+    .search-wrap, .filters, .pdf-btn, .csv-btn, .epub-btn, .sync-btn, .chevron, .wa-link, .notes-form { display: none !important; }
     .print-meta {
       display: block;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -493,6 +513,54 @@
   .note-meta b { color: var(--text); }
   .no-notes { font-size: 12px; color: var(--text-dim); font-style: italic; margin-bottom: 10px; }
   .note-text { font-size: 13px; color: var(--text); line-height: 1.45; }
+  .note-meta .example-tag {
+    font-size: 9px;
+    background: var(--gold-soft);
+    color: var(--gold-ink);
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .nda-badge {
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  .nda-badge.nda-yes { background: rgba(1,170,71,0.18); color: var(--green-ink); }
+  .nda-badge.nda-no { background: rgba(220,20,60,0.15); color: var(--red-ink); }
+  .notes-form { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  .form-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    color: var(--gold-ink);
+    background: var(--gold-soft);
+    border: 1px solid rgba(212,160,23,0.4);
+    border-radius: 8px;
+    padding: 8px 14px;
+    text-decoration: none;
+    width: fit-content;
+    transition: background .15s ease;
+  }
+  .form-link:hover { background: rgba(212,160,23,0.28); }
+  .form-hint { font-size: 11.5px; color: var(--text-dim); margin-top: 6px; }
+  .form-hint code {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--text);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  .edit-hint { font-size: 11px; color: var(--text-dim); margin-top: 8px; line-height: 1.4; }
 </style>
 
 <script>
@@ -707,6 +775,11 @@ function renderGrid() {
           <div class="notes-section">
             <div class="notes-header">💬 Reviewer Notes</div>
             <div class="notes-list" id="notes-list-${idx}">${renderNotesHTML(p.notes)}</div>
+            <div class="notes-form">
+              <a class="form-link" href="${FORM_URL}" target="_blank" rel="noopener noreferrer">📝 Add a note via Google Form</a>
+              <div class="form-hint">Type exactly this in the Project field: <code>${p.name}</code></div>
+              <div class="edit-hint">Made a mistake? After submitting, Google Forms shows an "Edit your response" link on the confirmation page — use that to fix or update your note instead of resubmitting.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -721,16 +794,108 @@ function toggleCard(idx) {
 
 function renderNotesHTML(notes) {
   if (!notes || notes.length === 0) {
-    return `<div class="no-notes">No reviewer notes yet.</div>`;
+    return `<div class="no-notes">No reviewer notes yet — be the first to add one.</div>`;
   }
-  return notes.map(n => `
+  return notes.map(n => {
+    let ndaBadge = "";
+    if (n.nda) {
+      const isYes = n.nda.toLowerCase().startsWith("y");
+      ndaBadge = `<span class="nda-badge ${isYes ? 'nda-yes' : 'nda-no'}">NDA: ${isYes ? '✓ Signed' : '✗ Not signed'}</span>`;
+    }
+    return `
     <div class="note-item">
       <div class="note-avatar">${n.author.trim().charAt(0).toUpperCase()}</div>
       <div class="note-body">
-        <div class="note-meta"><b>${n.author}</b> · ${n.date}</div>
+        <div class="note-meta"><b>${n.author}</b> · ${n.date}${n.example ? '<span class="example-tag">Example</span>' : ''} ${ndaBadge}</div>
         <div class="note-text">${n.text}</div>
       </div>
-    </div>`).join("");
+    </div>`;
+  }).join("");
+}
+
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScvjBbvgWGFmw_jG1MKosamwgCD4DPhHTkobUI075Y4zbPT0Q/viewform";
+const NOTES_GVIZ_URL = "https://docs.google.com/spreadsheets/d/18wlWY20NFrGCCCS5tdS2DG-VzWS9PxsHkjNsV2hAHG8/gviz/tq?tqx=out:csv&sheet=Form_Responses";
+const NOTES_PUB_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOuvMVx_CoI8JLrCroXxrclucg81jEoNoZIabzE8Mra38Y9OphfyPwVhy5FOy68T0CAgUh8f2O53X-/pub?output=csv";
+
+function fetchNotesCSV() {
+  return fetch(NOTES_GVIZ_URL)
+    .then(r => { if (!r.ok) throw new Error("gviz HTTP " + r.status); return r.text(); })
+    .catch(() => fetch(NOTES_PUB_CSV_URL).then(r => {
+      if (!r.ok) throw new Error("pub HTTP " + r.status);
+      return r.text();
+    }));
+}
+
+function formatDateMDY(raw) {
+  if (!raw) return "";
+  const d = new Date(raw);
+  if (isNaN(d.getTime())) return raw; // couldn't parse — show whatever was there rather than break
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  return `${mm}/${dd}/${yyyy}`;
+}
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = "", inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i+1] === '"') { field += '"'; i++; }
+        else inQuotes = false;
+      } else field += c;
+    } else {
+      if (c === '"') inQuotes = true;
+      else if (c === ",") { row.push(field); field = ""; }
+      else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
+      else if (c === "\r") { /* skip */ }
+      else field += c;
+    }
+  }
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+  return rows;
+}
+
+function loadRemoteNotes() {
+  fetchNotesCSV()
+    .then(text => {
+      const rows = parseCSV(text);
+      if (rows.length < 2) return;
+      const header = rows[0].map(h => h.trim().toLowerCase());
+      const iProject = header.indexOf("project");
+      const iReviewer = header.indexOf("reviewer");
+      const iDate = header.indexOf("date");
+      const iNote = header.indexOf("note");
+      const iEmail = header.findIndex(h => h.includes("email"));
+      const iPhone = header.findIndex(h => h.includes("phone"));
+      const iNda = header.findIndex(h => h.includes("nda"));
+      if (iProject === -1) return;
+      PROJECTS.forEach(p => { p.notes = []; });
+      rows.slice(1).forEach(r => {
+        const projVal = (r[iProject] || "").trim();
+        if (!projVal) return;
+        const match = PROJECTS.find(p => {
+          const candidates = [p.name, ...(p.aliases || [])];
+          return candidates.some(name =>
+            name.toLowerCase().includes(projVal.toLowerCase()) ||
+            projVal.toLowerCase().includes(name.toLowerCase())
+          );
+        });
+        if (!match) return;
+        match.notes.push({
+          author: (r[iReviewer] || "Anonymous").trim(),
+          date: formatDateMDY((r[iDate] || "").trim()),
+          text: (r[iNote] || "").trim(),
+          email: iEmail > -1 ? (r[iEmail] || "").trim() : "",
+          phone: iPhone > -1 ? (r[iPhone] || "").trim() : "",
+          nda: iNda > -1 ? (r[iNda] || "").trim() : ""
+        });
+      });
+      renderGrid();
+    })
+    .catch(err => console.warn("Could not load reviewer notes:", err));
 }
 
 function exportPDF() {
@@ -904,6 +1069,7 @@ renderStats();
 renderDonut();
 renderFilters();
 renderGrid();
+loadRemoteNotes();
 </script>
 </body>
 </html>
