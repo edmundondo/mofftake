@@ -64,12 +64,11 @@
     --red: #DC143C;
     --red-ink: #A61930;
     --high: #C2410C;
-    --badge-bg: #1B1D23;
-    --badge-border: #2A2D35;
-    --badge-icon-bg: linear-gradient(135deg, #6C5CE7, #341F97);
+    --badge-bg: var(--panel-hover);
+    --badge-icon-bg: linear-gradient(135deg, var(--gold), var(--gold-ink));
     --badge-icon-text: #FFFFFF;
-    --badge-text: #B7BAC4;
-    --badge-brand: #FFFFFF;
+    --badge-text: var(--text-dim);
+    --badge-brand: var(--gold-ink);
     --badge-font: system-ui, -apple-system, Segoe UI, sans-serif;
   }
 
@@ -79,11 +78,9 @@
     gap: 10px;
     width: fit-content;
     margin: 22px auto 0;
-    background: var(--badge-bg);
-    border: 1px solid var(--badge-border);
-    border-radius: 999px;
-    padding: 6px 14px 6px 6px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.28);
+    background: transparent;
+    border: none;
+    box-shadow: none;
   }
   .status-badge-icon {
     width: 28px; height: 28px;
